@@ -1,13 +1,7 @@
-﻿//var meshCellSize = 10;
-//	var dxx = meshCellSize;
-//	var dyy = meshCellSize;
-
-
-	var d0 = 10;
+﻿var d0 = 10; // Grid cell size
 
 // Создать meshgrid
 function calcMeshGrid(geometry, vx, vy, sx) {
-
 
 	const sy = 0.25;
 	const sn = 0.5;
@@ -22,17 +16,15 @@ function calcMeshGrid(geometry, vx, vy, sx) {
 	var minY = 0;
 	var maxY = 0;
 
-	for (var i = 0; i < vy; ++i) {
+	for (var i = 0; i < vy; ++i)
 		for (var j = 0; j < vx; ++j) {
 			vertices2[i * vx + j] = new THREE.Vector3(j*d0, i*d0, 0);
 		}
-	}
 
-	let normX = sn/vertices2[n - 1].x;
-	let normY = sn/vertices2[n - 1].y;
+	var normX = sn/vertices2[n - 1].x;
+	var normY = sn/vertices2[n - 1].y;
 
 	for (var k = 0; k < vx * (vy-1) - 1; ++k) {
-		if (((k+1) % vx) == 0) continue;
 		faces2.push( new THREE.Face3(k, k+1, k+vx));
 
 		Uvs2.push([new THREE.Vector2( vertices2[k].x * normX + sx, vertices2[k].y * normY + sy),
