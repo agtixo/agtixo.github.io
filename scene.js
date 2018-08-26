@@ -16,7 +16,7 @@ var onLoad = function (texture) {
 	var leftFrameGeometry = new THREE.Geometry();
 	var box1 = calcMeshGrid(leftFrameGeometry, meshColumns + 1, meshRows + 1, 0.25);//0.39);
 
-	var leftFrame = new THREE.Mesh(leftFrameGeometry, bufMaterial2);
+	var leftFrame = new THREE.Mesh(leftFrameGeometry, bufMaterial);
 
 	box1 = recalcXY(leftFrameGeometry, screenSize.h / (box1.maxY - box1.minY));
 
@@ -27,7 +27,7 @@ var onLoad = function (texture) {
 	var rightFrameGeometry = new THREE.Geometry();
 	var box2 = calcMeshGrid(rightFrameGeometry, meshColumns + 1, meshRows + 1, 0.25); //0.11);
 
-	var rightFrame = new THREE.Mesh(rightFrameGeometry, bufMaterial);
+	var rightFrame = new THREE.Mesh(rightFrameGeometry, bufMaterial2);
 	box2 = recalcXY(rightFrameGeometry, screenSize.h / (box2.maxY - box2.minY));
 	addToScene(scene, rightFrame, dd -box2.minX, - (box2.maxY + box2.minY)/2,-15);
 
