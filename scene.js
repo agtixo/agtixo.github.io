@@ -22,6 +22,9 @@ var bufferTextureR = new THREE.WebGLRenderTarget( 2048, 2048, { minFilter: THREE
 
 var globeGeometry = new THREE.SphereGeometry(radius, segments, rings);
 
+var vertShader = document.getElementById('vertexShader').innerHTML;
+var fragShader = document.getElementById('fragmentShader').innerHTML;
+
 // Загрузка текстуры завершена
 var onLoad = function (texture) {
 
@@ -35,45 +38,17 @@ var onLoad = function (texture) {
 	addToScene(bufferScene, bufferPointLight, 10, 50, 130);
 	addToScene(bufferScene, globe, 0, 0, 0);
 
-	var vertShader = document.getElementById('vertexShader').innerHTML;
-	var fragShader = document.getElementById('fragmentShader').innerHTML;
-
 	var mm_px = screenSize.h / (meshRows * d0);
 	var box1 = getBox(mm_px);
 	var xc = (box1.maxX - box1.minX)/2;
 
 	// Левый кадр
-	var leftFrameGeometry = new THREE.Geometry();
-	calcMeshGrid(leftFrameGeometry, meshColumns + 1, meshRows + 1, 0.25);
+	var leftFrame = newFrame(bufferTextureL);
+	addToScene(scene, leftFrame, -xc , 0, 0);
 
-	var uniformsL = {
-	    u_texture: { type: 't', value: bufferTextureL }
-	};
-
-	var bufMaterialL = new THREE.ShaderMaterial({
-	    uniforms: uniformsL,
-	    vertexShader: vertShader,
-	    fragmentShader: fragShader
-	});
-
-	var leftFrame = new THREE.Mesh(leftFrameGeometry, bufMaterialL);
-	addToScene(scene, leftFrame, -xc ,  0,0);
-
-	var rightFrameGeometry = new THREE.Geometry();
-	calcMeshGrid(rightFrameGeometry, meshColumns + 1, meshRows + 1, 0.25);
-
-	var uniformsR = {
-	    u_texture: { type: 't', value: bufferTextureR }
-	};
-
-	var bufMaterialR = new THREE.ShaderMaterial({
-	    uniforms: uniformsR,
-	    vertexShader: vertShader,
-	    fragmentShader: fragShader
-	});
-
-	var rightFrame = new THREE.Mesh(rightFrameGeometry, bufMaterialR);
-	addToScene(scene, rightFrame, xc, 0,0) ;
+	// Правый кадр
+	var rightFrame = newFrame(bufferTextureR);
+	addToScene(scene, rightFrame, xc , 0, 0);
 
 	var ht=(box1.maxY - box1.minY);
 	var wid = window.innerWidth/window.innerHeight*ht; //resHDP.w/resHDP.h * ht;
@@ -165,4 +140,22 @@ function getBox(mm_px) {
 function kDistortion(r) {
 	// r must be in mm
 	return ((((0.0000004 * r - 0.00001281) * r + 0.00033633) * r - 0.00042664) * r + 1);
+}
+
+function newFrame(bufferTexture) {
+	var newFrameGeometry = new THREE.Geometry();
+	calcMeshGrid(newFrameGeometry, meshColumns + 1, meshRows + 1, 0.25);
+
+	var uniforms = {
+	    u_texture: { type: 't', value: bufferTexture }
+	};
+
+	var bufMaterial = new THREE.ShaderMaterial({
+	    uniforms: uniforms,
+	    vertexShader: vertShader,
+	    fragmentShader: fragShader
+	});
+
+	var frame = new THREE.Mesh(newFrameGeometry, bufMaterial);
+	return frame;
 }
