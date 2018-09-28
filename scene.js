@@ -64,7 +64,7 @@ var onLoad = function (texture) {
 	bufCameraR.lookAt(new THREE.Vector3(0,0,radius));
 
 	var render = function () {
-			// globe.rotation.y += 0.003;
+			globe.rotation.y += 0.003;
 			// Делаем рендер во внеэкранную текстуру
 			renderer.render(bufferScene, bufCameraL, bufferTextureL);
 			renderer.render(bufferScene, bufCameraR, bufferTextureR);
