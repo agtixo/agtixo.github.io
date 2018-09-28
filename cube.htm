@@ -67,7 +67,8 @@
 
 				render();
 			}
-
+			
+			renderer.render(scene, camera);
 			var loader = new THREE.TextureLoader();
 			loader.load('earth2048x1024.jpg', onLoad);
 		  
